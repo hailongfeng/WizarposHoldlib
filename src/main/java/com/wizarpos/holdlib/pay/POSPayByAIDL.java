@@ -22,7 +22,8 @@ import com.wizarpos.paymentrouter.aidl.IWizarPaymentSetting;
  * @author harlen
  * @date 2015年12月15日 上午10:06:33
  */
-public class POSPayByAIDL extends POSPayBase implements IPOSPay {
+public class
+POSPayByAIDL extends POSPayBase implements IPOSPay {
 	final ServiceConnection mConnPayment = new PaymentConnection();
 	
 	public POSPayByAIDL(Context mContext, Handler mHandler) {

@@ -26,17 +26,15 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:23.1.1'
-
     testCompile 'junit:junit:4.12'
-    //xutils 框架
     compile 'org.xutils:xutils:3.3.34'
-    compile files('libs/gson-2.2.1.jar')
-    compile files('libs/android-async-http-1.4.7.jar')
+    compile 'com.squareup.okhttp:okhttp:2.4.0'
+    compile 'com.squareup.okio:okio:1.5.0'
+    compile 'com.google.code.gson:gson:2.6.2'
+    compile 'com.umeng.analytics:analytics:6.0.1'
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+
     compile files('libs/commons-codec-1.5.jar')
     compile files('libs/hsm-controller.jar')
     compile files('libs/PaymentRouter_AIP_VSP_151102.jar')
-    compile files('libs/umeng_sdk.jar')
-    compile files('libs/universal-image-loader-1.9.4-SNAPSHOT.jar')
-    compile 'com.squareup.okhttp:okhttp:2.4.0'
-    compile 'com.squareup.okio:okio:1.5.0'
 }
