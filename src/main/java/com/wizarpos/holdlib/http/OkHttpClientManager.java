@@ -147,6 +147,8 @@ public class OkHttpClientManager {
         deliveryResult(callback, request);
     }
 
+
+
     /**
      * 异步的post请求
      *
@@ -547,6 +549,7 @@ public class OkHttpClientManager {
         });
     }
 
+
     private Request buildPostRequest(String url, Param[] params) {
         if (params == null) {
             params = new Param[0];
@@ -555,6 +558,7 @@ public class OkHttpClientManager {
         for (Param param : params) {
             builder.add(param.key, param.value);
         }
+
         Headers.Builder builder1=new Headers.Builder();
         Headers headers=builder1.add("","").build();
         RequestBody requestBody = builder.build();

@@ -15,7 +15,7 @@ import java.util.Map;
  * Created by Administrator on 2016/4/14.
  */
 public class XutilsHttpUtil {
-    private String url = "http://58.213.92.226:9092/store-server/service";
+//    private String url = "http://58.213.92.226:9092/store-server/service";
     private int timeOut = 10000;
     private String charSet = "UTF-8";
 
@@ -23,9 +23,6 @@ public class XutilsHttpUtil {
     }
 
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
 
     public Map<String, String> getCommonHeads() {
         Map<String, String> heads = new HashMap<>();
@@ -44,7 +41,7 @@ public class XutilsHttpUtil {
         }
     }
 
-    private RequestParams getCommonPostRequestParams(Map<String, String> heads, String bodyContent) {
+    private RequestParams getCommonPostRequestParams(String url,Map<String, String> heads, String bodyContent) {
         RequestParams requestParams = new RequestParams(url);
         requestParams.setConnectTimeout(timeOut);
         requestParams.setCharset(charSet);
@@ -61,7 +58,7 @@ public class XutilsHttpUtil {
         return requestParams;
     }
 
-    private RequestParams getCommonGetRequestParams(Map<String, String> heads, Map<String, String> param) {
+    private RequestParams getCommonGetRequestParams(String url,Map<String, String> heads, Map<String, String> param) {
         RequestParams requestParams = new RequestParams(url);
         requestParams.setConnectTimeout(timeOut);
         requestParams.setCharset(charSet);
@@ -87,23 +84,23 @@ public class XutilsHttpUtil {
      * @param bodyContent    请求内容 body中的
      * @param commonCallback
      */
-    public void post(Map<String, String> heads, String bodyContent, Callback.CommonCallback commonCallback) {
-        RequestParams requestParams = getCommonPostRequestParams(heads, bodyContent);
+    public void post(String url,Map<String, String> heads, String bodyContent, Callback.CommonCallback commonCallback) {
+        RequestParams requestParams = getCommonPostRequestParams(url,heads, bodyContent);
         x.http().post(requestParams, commonCallback);
     }
 
-    public <T> T postSync(Map<String, String> heads, String bodyContent, Class<T> clazz) throws Throwable {
-        RequestParams requestParams = getCommonPostRequestParams(heads, bodyContent);
+    public <T> T postSync(String url,Map<String, String> heads, String bodyContent, Class<T> clazz) throws Throwable {
+        RequestParams requestParams = getCommonPostRequestParams(url,heads, bodyContent);
         return x.http().postSync(requestParams, clazz);
     }
 
-    public void get(Map<String, String> heads, Map<String, String> param, Callback.CommonCallback commonCallback) {
-        RequestParams requestParams = getCommonGetRequestParams(heads, param);
+    public void get(String url,Map<String, String> heads, Map<String, String> param, Callback.CommonCallback commonCallback) {
+        RequestParams requestParams = getCommonGetRequestParams(url,heads, param);
         x.http().get(requestParams, commonCallback);
     }
 
-    public <T> T getSync(Map<String, String> heads, Map<String, String> param, Class<T> clazz) throws Throwable {
-        RequestParams requestParams = getCommonGetRequestParams(heads, param);
+    public <T> T getSync(String url,Map<String, String> heads, Map<String, String> param, Class<T> clazz) throws Throwable {
+        RequestParams requestParams = getCommonGetRequestParams(url,heads, param);
         return x.http().getSync(requestParams, clazz);
     }
 

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.wizarpos.holdlib.driver;
 
@@ -17,8 +17,8 @@ import com.wizarpos.holdlib.common.ICallBack;
  */
 public class MSRCardAction extends ConstantAction {
 
-	
-	
+
+
 
 	/**
 	 * @param mContext
@@ -31,25 +31,8 @@ public class MSRCardAction extends ConstantAction {
 
 	public void open(final ICallBack<Object> callBack) {
 		System.out.print("current open status is "+isOpened);
-		if(isOpened){
-			MSRInterface.close();
-		}
-		final int result = MSRInterface.open();
-
-		if (result < 0) {
-			System.out.print("result:" + result + "打开失败。。。");
-			mHandler.post(new Runnable() {
-
-				@Override
-				public void run() {
-					callBack.onFail("设备打开失败");
-				}
-			});
-		} else {
-			isOpened = true;
-			CallBackThread thread = new CallBackThread(1, callBack);
-			thread.start();
-		}
+		CallBackThread thread = new CallBackThread(1, callBack);
+		thread.start();
 
 	}
 
@@ -59,8 +42,8 @@ public class MSRCardAction extends ConstantAction {
 			@Override
 			public int getResult() {
 				int result = 0;
-				isOpened = false;
 				result = MSRInterface.close();
+				isOpened = false;
 				System.out.print("关闭成功");
 				return result;
 			}
@@ -79,37 +62,62 @@ public class MSRCardAction extends ConstantAction {
 
 		@Override
 		public void run() {
+			if(isOpened){
+				close();
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			int result = MSRInterface.open();
+			if (result < 0) {
+				System.out.print("result:" + result + "打开失败。。。");
+				callBack(false, callBack, "设备打开失败");
+				return;
+			} else {
+				isOpened = true;
+			}
 			synchronized (MSRInterface.object) {
 				try {
 					MSRInterface.object.wait();
 				} catch (InterruptedException e) {
+					close();
 					e.printStackTrace();
 				}
 			}
 			if (MSRInterface.eventID == MSRInterface.CONTACTLESS_CARD_EVENT_FOUND_CARD) {
 				System.out.print("Find a card");
-				int result = 0;
 				result = getTrackError(trackNo);
 				if (result < 0) {
 					System.out.print("TrackError：" + result);
+					close();
 					callBack(false, callBack, "getTrack Error");
+					return;
 				}
 				result = getTrackDataLength(trackNo);
 				if (result < 0) {
 					System.out.print("获取长度出错：" + result);
+					close();
 					callBack(false, callBack, "getTrackDataLength Error");
+					return;
 				}
 				byte[] arryTrackData = new byte[result];
 				result = getTrackData(trackNo, arryTrackData);
 				if (result < 0) {
 					System.out.print("获取数据出错：" + result);
+					close();
 					callBack(false, callBack, "getTrackData Error");
+					return;
 				}
 				String cardNum = new String(arryTrackData);
 				System.out.print("result=" + result + "，磁道：" + trackNo + "，数据：" + cardNum);
+				close();
 				callBack(true, callBack, cardNum);
 			} else if (MSRInterface.eventID == EVENT_ID_CANCEL) {
+				close();
 				System.out.print("Cancel notifier");
+				return;
 			}
 		}
 	}
