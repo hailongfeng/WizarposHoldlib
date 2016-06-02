@@ -33,8 +33,7 @@ dependencies {
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.umeng.analytics:analytics:6.0.1'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
-
-    compile files('libs/commons-codec-1.5.jar')
     compile files('libs/hsm-controller.jar')
     compile files('libs/PaymentRouter_AIP_VSP_151102.jar')
+    compile 'commons-codec:commons-codec:20041127.091804'
 }
