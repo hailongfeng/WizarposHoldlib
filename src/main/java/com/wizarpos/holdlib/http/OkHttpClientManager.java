@@ -8,8 +8,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.widget.ImageView;
 
-import com.google.gson.Gson;
-import com.google.gson.internal.$Gson$Types;
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.FormEncodingBuilder;
@@ -43,7 +41,6 @@ public class OkHttpClientManager {
     private static OkHttpClientManager mInstance;
     private OkHttpClient mOkHttpClient;
     private Handler mDelivery;
-    private Gson mGson;
 
 
     private static final String TAG = "OkHttpClientManager";
@@ -54,7 +51,6 @@ public class OkHttpClientManager {
         mOkHttpClient.setCookieHandler(new CookieManager(null, CookiePolicy.ACCEPT_ORIGINAL_SERVER));
         mOkHttpClient.setConnectTimeout(10000L, TimeUnit.SECONDS);
         mDelivery = new Handler(Looper.getMainLooper());
-        mGson = new Gson();
     }
 
     public static OkHttpClientManager getInstance() {
@@ -512,15 +508,13 @@ public class OkHttpClientManager {
                     if (callback.mType == String.class) {
                         sendSuccessResultCallback(string, callback);
                     } else {
-                        Object o = mGson.fromJson(string, callback.mType);
+                        Object o = com.alibaba.fastjson.JSON.parseObject(string, callback.mType);
+//                        Object o = mGson.fromJson(string, callback.mType);
                         sendSuccessResultCallback(o, callback);
                     }
 
 
                 } catch (IOException e) {
-                    sendFailedStringCallback(response.request(), e, callback);
-                } catch (com.google.gson.JsonParseException e)//Json解析的错误
-                {
                     sendFailedStringCallback(response.request(), e, callback);
                 }
 
@@ -578,12 +572,13 @@ public class OkHttpClientManager {
         }
 
         static Type getSuperclassTypeParameter(Class<?> subclass) {
-            Type superclass = subclass.getGenericSuperclass();
+            Type superclass = subclass.getGenericSuperclass();//得到父类
             if (superclass instanceof Class) {
                 throw new RuntimeException("Missing type parameter.");
             }
             ParameterizedType parameterized = (ParameterizedType) superclass;
-            return $Gson$Types.canonicalize(parameterized.getActualTypeArguments()[0]);
+//            return $Gson$Types.canonicalize(parameterized.getActualTypeArguments()[0]);
+            return parameterized.getActualTypeArguments()[0];
         }
 
         public abstract void onError(Request request, Exception e);

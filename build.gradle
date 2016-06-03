@@ -30,8 +30,8 @@ dependencies {
     compile 'org.xutils:xutils:3.3.34'
     compile 'com.squareup.okhttp:okhttp:2.4.0'
     compile 'com.squareup.okio:okio:1.5.0'
-    compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.umeng.analytics:analytics:6.0.1'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     compile 'commons-codec:commons-codec:20041127.091804'
+    compile 'com.alibaba:fastjson:1.2.12'
 }

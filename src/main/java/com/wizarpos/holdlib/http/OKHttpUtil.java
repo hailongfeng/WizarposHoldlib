@@ -3,10 +3,8 @@ package com.wizarpos.holdlib.http;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.google.gson.Gson;
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Callback;
-import com.squareup.okhttp.FormEncodingBuilder;
 import com.squareup.okhttp.Headers;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
@@ -14,11 +12,6 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
-import org.xutils.http.RequestParams;
-import org.xutils.x;
-
-import java.io.File;
-import java.io.IOException;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.util.HashMap;
@@ -34,7 +27,6 @@ public class OKHttpUtil {
     private static OKHttpUtil mInstance;
     private OkHttpClient mOkHttpClient;
     private Handler mDelivery;
-    private Gson mGson;
 
 
     private static final String TAG = "OkHttpClientManager";
@@ -45,7 +37,6 @@ public class OKHttpUtil {
         mOkHttpClient.setCookieHandler(new CookieManager(null, CookiePolicy.ACCEPT_ORIGINAL_SERVER));
         mOkHttpClient.setConnectTimeout(10000L, TimeUnit.SECONDS);
         mDelivery = new Handler(Looper.getMainLooper());
-        mGson = new Gson();
     }
 
     public static OKHttpUtil getInstance() {

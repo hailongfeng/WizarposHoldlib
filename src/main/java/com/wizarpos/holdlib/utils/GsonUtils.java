@@ -3,11 +3,10 @@
  */
 package com.wizarpos.holdlib.utils;
 
+import com.alibaba.fastjson.JSON;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 /**
  * @ClassName: GsonUtils
@@ -19,20 +18,17 @@ public class GsonUtils {
 	public static <T> T getBean(String jsonString, Class<T> cls) {
 		T t = null;
 		try {
-			Gson gson = new Gson();
-			t = gson.fromJson(jsonString, cls);
+			t = JSON.parseObject(jsonString, cls);
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 		return t;
 	}
 
-	public static <T> List<T> getBeans(String jsonString, Class<T> abc) {
+	public static <T> List<T> getBeans(String jsonString, Class<T> clazz) {
 		List<T> list = new ArrayList<T>();
 		try {
-			Gson gson = new Gson();
-			list = gson.fromJson(jsonString, new TypeToken<List<T>>() {
-			}.getType());
+			list.addAll(JSON.parseArray(jsonString, clazz));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
